@@ -1,0 +1,11 @@
+---
+# tasks file for Linux-update
+
+- name: APT | Update System
+  import_tasks: debian.yml
+  #when: ansible_hostname == "srv-debian"
+
+#To System Red-Hat system
+- name: Yum | Update System
+  import_tasks: rocky.yml
+  #when: ansible_hostname == "srv-rocky"

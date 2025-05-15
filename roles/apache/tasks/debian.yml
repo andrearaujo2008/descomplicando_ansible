@@ -1,0 +1,46 @@
+---
+#Author: Andre de Araujo
+#Description: Installing Apache packages in Debian family
+#YML name: playbook_p_final.yml
+#Contact: andredearaujo2007@hotmail.com
+#Ansible_Version: 2.10.8
+#Last Date: June 2024
+
+- name: "Install Apache on Debian distro"
+  tags: 
+  
+  - apache
+  apt:
+    name:
+      - apache2
+      - libapache2-mod-fcgid
+      - libapache2-mod-security2
+      - libapache2-mod-evasive
+      - openssl
+    state: latest
+    
+  notify:
+   - enableApache2
+  
+- name: "Habilita mods no apache2 - Debian"
+  apache2_module:
+    name: "{{ item }}"
+  with_items:
+    - actions
+    - fcgid
+    - alias
+    - proxy_fcgi
+    - headers
+    - ssl
+ 
+- name: "Cria virtual host com as configuracoes do site - Debain"
+  template:
+    src: templates/site.conf
+    dest: /etc/apache2/sites-available/{{ log_prefix }}.conf
+  notify:
+    - enableSite
+    - reloadApache2
+    - addHostFile
+    - InstallWordPress
+    - SetPermissionWP-Debian
+  

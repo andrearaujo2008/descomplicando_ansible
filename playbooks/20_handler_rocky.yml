@@ -1,0 +1,29 @@
+---
+- name: Ansible Handlers
+  hosts: rocky
+  become: yes
+  tasks:
+
+    - name: Install Package Nginx
+      ansible.builtin.dnf:
+        update_cache: yes
+        name: nginx
+        state: latest
+      tags: inst_nginx
+
+    - name: NGINX | Listener
+      ansible.builtin.replace:
+        dest: /etc/nginx/nginx.conf
+        regexp: 'listen       80;'
+        replace: 'listen {{ ansible_default_ipv4.address }}:80;'
+      notify: restart nginx
+      tags: nginx
+  
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
+        enabled: yes 
+
+...

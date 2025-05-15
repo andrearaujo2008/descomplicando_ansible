@@ -1,0 +1,17 @@
+---
+
+- name: Ansible Loop
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: USER | Add User
+      ansible.builtin.user:
+        name: '{{ item }}'
+        state: present
+        groups: "dede"
+      loop:
+        - eddie
+        - dime
+        - tylor
+
+...

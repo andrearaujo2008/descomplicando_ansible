@@ -1,0 +1,73 @@
+---
+# handlers file for apache
+#Author: Andre de Araujo
+#Description: Restart the sevice apache 2
+#YML name: playbook_p_final.yml
+#Contact: andredearaujo2007@hotmail.com
+#Ansible_Version: 2.10.8
+#Create in: June 2024
+#Last update: 13/06/2024
+
+- name: 'enableApache2'
+  service:
+    name: apache2
+    enable: yes
+
+- name: 'addHostFile'
+  lineinfile:
+    path: /etc/hosts
+    line: "{{ item }}"
+    create: yes
+  loop:
+    - "{{inventory_hostname}} {{ site_url }}"
+    - "{{inventory_hostname}} {{ site_domain }}"
+
+- name: 'addInHttpdFile'
+  lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    line: "include vhost.d/*.conf"
+  when: (ansible_facts['os_family' ] == "Rocky")
+
+- name: 'RestartHttpd'
+  service:
+    name: httpd
+    state: restarted
+
+- name: 'InstallWordPress'
+  ansible.builtin.unarchive:
+    src: https://wordpress.org/latest.tar.gz
+    dest: " { site_folder }"
+    remote_src: yes
+
+- name: 'SetPermissionWP-CentOS'
+  
+  file:
+    path: "{{ site_folder }}/wordpress"
+    state: directory
+    owner: apache
+    group: apache
+    recursive: yes
+  when: (ansible_facts['os_family' ] == "Rocky")
+
+- name: 'SetPermissionWP-Debian'
+  file:
+    path: "{{ site_folder }}/wordpress"
+    state: directory
+    owner: www-data
+    group: www-data
+    recursive: yes
+  when: (ansible_facts['os_family' ] == "Debian")
+
+- name: 'enableSite'
+  command: a2ensite {{ log_prefix }}.conf
+
+- name: 'reloadApache2'
+  service:
+    name: apache2
+    state: reloaded
+    enabled: yes
+  
+- name: 'enablehttpd'
+  service:
+    name: httpd
+    enable: yes

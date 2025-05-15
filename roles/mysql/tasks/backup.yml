@@ -1,0 +1,8 @@
+#Contact: andredearaujo2007@gmail.com
+#Ansible_Version: 2.10.8
+#Ano: Junho 2024
+#Create in 02/12/2025
+
+- name: Executing backup database
+  ansible.builtin.shell:
+    cmd:  mysqldump -u root -p {{mysql_root_password}} --all-databases | gzip > backup_$(date +\%F).sql.gz
