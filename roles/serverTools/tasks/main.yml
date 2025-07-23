@@ -1,0 +1,69 @@
+---
+# Author: Andre de Araujo
+# Description: Instalation and updating packages for LAMP
+#YML name: projeto_p_final.yml
+#Contact: andredearaujo2007@gmail.com
+#Ansible_Version: 2.10.8
+#Ano: Junho 2024
+
+
+# tasks file for serverTools
+
+- name: Set a hostname
+  hostname:
+    use: systemd # you need put this task to reconize hostname in RedHat OS
+    name: "{{ hostname }}"
+  notify:
+    - addInHostsFile
+    
+
+- name: 'Role: serverTools Softwares para administracao do servidor - Debian'
+  tags: debian
+  apt:
+    update_cache: yes #atualização do package lists
+    cache_valid_time: 3600 #Valido por 1 hora
+    name: #Pacotes que serão instalado
+      - vim
+      - iftop
+      - zip
+      - net-tools
+      - iftop
+      - htop
+      - wget
+      - curl
+      - python3
+    state: latest #Aqui vai instalar a ultima versao dos aplicativos
+  when: (ansible_facts['os_family'] == "Debian") # Só vai instalar os pacotes que são da Familia Ubuntu, Mint, etc..
+
+- name: 'Role: serverTools Softwares para administracao do servidor - Red Hat'
+ 
+  yum:
+    update_cache: yes #atualização do package lists
+    name: #Pacotes que serão instalado
+      - vim
+      - zip
+      - epel-release # !!!! don't put the package htop before install this one!!!!
+    #  - htop # install this package after install epel-release
+      - wget
+      - curl
+      - python3
+      - yum-utils
+      - pip
+    state: latest #Aqui vai instalar a ultima versao dos aplicativos
+  when: (ansible_facts['os_family'] == "Rocky") # Só vai instalar os pacotes que são da Familia Rocky, Fedora, etc..
+  notify:
+      - enable yum-utils
+
+- name: "Permite trafego http no firewalld do Rock-Linux"
+  firewalld:
+    service: http
+    permanent: yes
+    state: enabled
+  when: (ansible_facts['distribution'] == "Rocky")
+
+- name: "Disable SElinux em sistemas derivados do RedHat"
+  ansible.posix.selinux:
+    state: disabled
+  when: (ansible_facts['os_family'] == "Rocky")
+  notify:
+    - Restart Server 

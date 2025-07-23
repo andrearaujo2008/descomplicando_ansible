@@ -1,0 +1,20 @@
+[debian]
+192.168.100.11 ansible_user=dex01 zz=inventory_file
+
+[rocky]
+192.168.100.12 ansible_user=dex02
+
+[linux:children]
+rocky
+debian
+
+[linux:vars]
+zz=children
+
+[debian:vars]
+http_port=8080
+a=6767
+zz=grupo
+
+[rocky:vars]
+zz=grupo

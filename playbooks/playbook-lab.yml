@@ -1,0 +1,123 @@
+---
+  - hosts: all
+    become: yes
+
+    vars:
+      default_dir: /ops/custom/
+
+    #Example list of variables
+
+      region:
+        - northeast
+        - southeast
+        - midwest
+
+    #Here is dictionary data
+      dict_dir: {
+        scripts: "{{ default_dir }}/scripts",
+        backup: "{{ default_dir }}/backup",
+        log: "{{ default_dir }}/log",
+        temp: "{{ default_dir }}/temp",
+      }
+
+    #Here install Wget to Rock Distros
+    tasks:
+    - name: "INSTALL WGET SERVICE"
+      dnf:
+        update_cache: yes
+        name: "wget"
+        state: absent
+      when: (ansible_facts ['distribution']=="Rocky")
+    #Here define hostname Debian Server
+
+    - name: "DEFINE HOSTNAME DOS SERVIDORES "
+      hostname:
+        name: "{{ hostname }}"
+        use: systemd
+     
+    #Here Create directories to Servers
+
+    - name: "CRIA DIRETORIO PADRAO NOS SERVIDORES"
+      file:
+        path: "{{ item }}" #item it is a reservate item used in Ansible
+        state: directory
+      with_items:
+        - "{{ dict_dir.scripts }}"
+        - "{{ dict_dir.backup }}"
+        - "{{ dict_dir.log }}"
+        - "{{ dict_dir.temp }}"
+
+  #Chandge the permission owners, groups and access of directories to Debian Distros
+
+    - name: "MUDA NOME PROPRIETARIO GRUPO E PERMISSAO PARA SERVIDORES DEBIAN"
+      file:
+        path: "{{ item }}" #item it is a reservate item used in Ansible
+        state: directory
+        owner: dex01
+        group: dex01
+        mode: 0600
+      with_items:
+        - "{{ default_dir }}/scripts"
+        - "{{ default_dir }}/backup"
+        - "{{ default_dir }}/log"
+        - "{{ default_dir }}/temp"
+      when: (ansible_facts ['distribution']=="Debian")
+
+    #Chandge the permission owners, groups and access of directories to Rocky Distros
+
+    - name: "MUDA NOME PROPRIETARIO GRUPO E PERMISSAO PARA SERVIDORES ROCKY LINUX"
+      file:
+        path: "{{ item }}" #item it is a reservate item used in Ansible
+        state: directory
+        owner: dex02
+        group: dex02
+        mode: 0640
+      with_items:
+        - "{{ default_dir }}/scripts"
+        - "{{ default_dir }}/backup"
+        - "{{ default_dir }}/log"
+        - "{{ default_dir }}/temp"
+      when: (ansible_facts ['distribution']=="Rocky")
+
+  # Create a Simple File to Debian
+
+    - name: "CRIA UM ARQUIVO SIMPLES NO DEBIAN"
+      file:
+        path: "{{ default_dir }}/teste.txt"
+        state: touch
+        owner: dex01
+        group: dex01
+        mode: 0755
+        modification_time: preserve # Aqui ele vai presevar a hora da criação e Modificacao
+        access_time: preserve # Aqui ele vai presevar o hora e data do acesso. 
+      when: (ansible_facts ['distribution']=="Debian")
+      
+  # Create a Simple File to Rocky
+
+    - name: "CRIA UM ARQUIVO SIMPLES NO ROCKY LINUX"
+      file:
+        path: "{{ default_dir }}/teste.txt"
+        state: touch
+        owner: dex02
+        group: dex02
+        mode: 0600
+        modification_time: preserve # Aqui ele vai presevar a hora da criação e Modificacao
+        access_time: preserve # Aqui ele vai presevar o hora e data do acesso. 
+      when: (ansible_facts ['distribution']=="Rocky")
+
+    - name: Exemplo de Register
+      shell: "hostname"
+      register: hostname
+
+    - name: Informar a data e hora do sistema
+      shell: "date"
+      register: data
+
+    - name: Exibindo Register
+      debug:
+        msg: A nome da hostname e  "{{ hostname.stdout_lines }}" A horas dos hosts sao "{{ data.start }}"
+
+    #Show the result list of variables defined
+    - name: Show the region
+      debug:
+        msg: A regiao e "{{ region[1] }}"
