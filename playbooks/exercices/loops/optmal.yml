@@ -1,0 +1,10 @@
+---
+ - name: Optimal redhat
+   hosts: rocky
+   tasks:
+    - name: Optimal yum 
+      ansible.builtin.yum:
+        name: "{{ list_of_packages }}"
+        state: present
+
+...

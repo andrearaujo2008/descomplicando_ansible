@@ -1,0 +1,14 @@
+---
+    
+    - name: Create users
+       
+      ansible.builtin.user:
+        name: "{{ item.usuario }}"
+        state: present
+        groups: "ansible"
+        become_user: Sao 
+      with_items:
+         - { usuario: Sao }
+       #  - { usuario: Mario }
+      
+...

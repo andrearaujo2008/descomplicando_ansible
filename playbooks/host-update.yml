@@ -1,0 +1,24 @@
+---
+- hosts: rocky
+  become: yes
+
+  tasks:
+      - name: "Update yum packages in Rocky Linux"
+        yum:
+          name: '*'
+          state: latest
+  tags: rocky
+  
+          
+          
+- hosts: debian
+  become: yes
+
+  tasks:
+    - name: "Update apt package Debian Family"
+      apt:
+       name: '*'
+       state: latest
+       update_cache: yes
+  tags: debian
+  

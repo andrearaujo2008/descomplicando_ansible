@@ -1,0 +1,10 @@
+---
+- name: Update System
+  hosts: all
+  gather_facts: True 
+  become: yes
+  roles:
+    - Linux-update
+    - mysql
+
+...

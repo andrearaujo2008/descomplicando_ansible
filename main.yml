@@ -1,0 +1,12 @@
+---
+
+- name: Main Playbook
+  hosts: all
+  become: yes
+  roles:
+     - Linux-update
+    #- configure_ngnix
+    #  - temp
+    #  - ansible-practice
+
+...

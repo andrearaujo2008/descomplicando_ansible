@@ -1,0 +1,15 @@
+---
+
+  - hosts: debian
+    become: yes
+    become_user: root
+  
+    tasks:
+    - name: teste 
+      ansible.builtin.copy:
+          src: ~/hosts
+          dest: /etc/hosts
+          owner: root
+          group: root
+         
+

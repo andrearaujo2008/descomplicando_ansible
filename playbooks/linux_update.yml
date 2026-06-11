@@ -1,0 +1,13 @@
+---
+- name: Update System
+  hosts: linux_update
+  gather_facts: True 
+  become: yes
+  roles:
+    - Linux-update
+
+#-  name: Run my custom role
+#  hosts: localhost
+#  gather_facts: false 
+#  roles:
+#    - my_namespace.my_collection.my_role

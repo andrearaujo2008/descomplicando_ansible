@@ -1,0 +1,21 @@
+---
+
+- name: Install essential packages
+  hosts: debian
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: Install essential packages Debian
+      ansible.builtin.apt:
+        update_cache: yes #update repository debian before install the package
+        name: '{{ item }}'
+        state: latest
+      loop:
+         - vim 
+         - nano
+         - net-tools
+         - screen
+         
+      loop_control:
+        pause: 5
+...

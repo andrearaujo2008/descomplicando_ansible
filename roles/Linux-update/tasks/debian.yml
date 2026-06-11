@@ -1,0 +1,24 @@
+---
+
+- name: APT | Update cache
+  ansible.builtin.apt:
+      update_cache: yes
+  when: ansible_distribution == "Debian" or ansible_hostname == "srv-debian"
+     
+- name: APT | Update System
+  ansible.builtin.apt:
+      name: "*"
+      state: latest
+  when: ansible_distribution == "Debian" or ansible_hostname == "srv-debian"
+
+- name: APT | Remove packages no longer required
+  ansible.builtin.apt:
+    autoremove: true 
+
+#- name: Enable color folders
+#  ansible.builtin.replace:
+#      path: /root/.bashrc
+#      regexp:  export LS_OPTIONS='--color=auto'
+#      replace: export LS_OPTIONS='--color=auto'
+
+...

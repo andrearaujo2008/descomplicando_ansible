@@ -1,0 +1,16 @@
+---
+
+- name: Ansible Register
+  hosts: localhost
+  tasks:
+    - name: SISOP | Find files
+      find:
+        path: /home/ansible/curso_ansible/
+        patterns: '*.cfg'
+      register: output
+
+    - name: SISOP | Show files
+      debug:
+        msg: "{{ output.files | map(attribute='path') }}"
+
+...

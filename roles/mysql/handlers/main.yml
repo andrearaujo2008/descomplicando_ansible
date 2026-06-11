@@ -1,0 +1,7 @@
+---
+# handlers file for mysql
+- name: maria
+  service:
+      name: mariadb
+      state: started
+      enabled: true

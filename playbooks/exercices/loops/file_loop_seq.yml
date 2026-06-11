@@ -1,0 +1,13 @@
+---
+ - name: Create files in sequence
+   hosts: all
+   become: yes
+   tasks:
+    - name: Creating a file tests.txt in sequence 1 to 10
+      ansible.builtin.file:
+       path: echo $HOME
+       name: "{{ item }}"
+       state: touch
+       mode: '0744'
+      with_sequence: start=0 end=9 format=test%x.txt
+...

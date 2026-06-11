@@ -1,0 +1,27 @@
+---
+  - hosts: all
+    become: yes
+
+    tasks:
+
+      - name: Register the disk usage root the server so far
+        command: df -h /
+        register: disk_root
+
+      - name: Register the memory free the server so far
+        command: free -m
+        register: memory_root
+
+      - debug: var={{ item }} 
+          
+        loop:
+          - disk_root.stdout_lines
+          - memory_root.stdout_lines
+
+      - name: Exemplo de Register
+        shell: "hostname"
+        register: hostname
+
+      - name: Exibindo o hostname
+        debug:
+          msg: "{{ hostname }}"

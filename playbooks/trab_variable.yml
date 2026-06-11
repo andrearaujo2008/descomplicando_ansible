@@ -1,0 +1,13 @@
+---
+#Trabalhando com variaveis apontado para um determinado arquivo
+
+- name: Testando variaveis
+  hosts: rocky
+  become: yes
+  vars_files: /home/ansible/curso_ansible/playbooks/variaveis/varfile.yml
+  tasks:
+    - name: DNF | Install packages
+      ansible.builtin.dnf:
+        name: "{{ packages }}"
+        state: latest
+...

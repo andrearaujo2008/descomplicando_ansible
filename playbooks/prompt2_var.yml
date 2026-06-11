@@ -1,0 +1,19 @@
+---
+- hosts: localhost
+  vars_prompt:
+
+    - name: username
+      prompt: What is your username?
+      private: false
+
+    - name: password
+      prompt: What is your password?
+      private: true # default nao colocando essa opcao ele e true
+
+  tasks:
+    - name: Print a message
+      ansible.builtin.debug:
+        msg: 'Logging in as {{ username }}'
+
+
+...
