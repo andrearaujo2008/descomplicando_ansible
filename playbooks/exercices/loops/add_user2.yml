@@ -1,0 +1,14 @@
+---
+  - name: Add several users
+    hosts: rocky
+    become: yes
+    tasks:
+    - name: Adding several users
+      ansible.builtin.user:
+        name: "{{ item.name }}"
+        state: present
+        groups: "{{ item.groups }}"
+      loop:
+         - { name: 'testuser1', groups: 'wheel' }
+         - { name: 'testuser2', groups: 'root' }
+...

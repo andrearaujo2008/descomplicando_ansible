@@ -1,0 +1,20 @@
+---
+
+- name: Loop Control
+  hosts: rocky
+  become: yes
+  tasks:
+   - name: DNF Install Packages
+     ansible.builtin.dnf:
+       name: "{{ item }}"
+       state: latest
+     loop:
+        - vim
+        - net-tools
+        - screen
+     loop_control:
+      pause: 5 #will sleep for 5 minutes between the tasks.
+
+     
+      
+...

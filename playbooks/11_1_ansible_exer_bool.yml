@@ -1,0 +1,23 @@
+---
+
+- name: Verificando se esta pronto para copia
+  hosts: localhost
+  vars:
+    arquivo: true
+    diretorio: true
+  tasks: 
+    - name: Run the task if 'arquivo' and 'diretorio' is true
+      ansible.builtin.debug:
+        msg: "Arquvo e Diretorio existem e pronto para copia"
+      when: arquivo and diretorio | bool
+
+    - name: Run the task if 'arquivo' is false and 'diretorio' is true
+      ansible.builtin.debug:
+        msg: "Arquivo nao existem mas diretorio sim, entao nao para copia"
+      when: not arquivo and diretorio | bool
+
+    - name: Run the task if 'arquivo' is false and 'diretorio' is false
+      ansible.builtin.debug:
+        msg: "Arquivo nao existe e nem diretorio, entao nao para copia"
+      when: not arquivo and not diretorio | bool
+...

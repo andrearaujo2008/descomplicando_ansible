@@ -1,0 +1,8 @@
+---
+# tasks file for base_setup
+
+- name: Install nginx
+  apt:
+    name: nginx
+    state: present
+  become: true

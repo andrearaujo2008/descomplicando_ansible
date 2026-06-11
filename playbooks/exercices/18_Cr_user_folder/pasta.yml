@@ -1,0 +1,15 @@
+---
+  - name: Criacao de usuario com suas pastas
+    hosts: localhost
+    tasks:
+      - include_tasks: 18_user.yml
+      - name: teste
+        ansible.builtin.file:
+          path: "{{ item.destino}}"
+          state: directory
+
+        with_items:
+          - { destino: '/home//pasta1'}
+          #- { destino: '/home/$USER/pasta2'}
+          #- { destino: '/home/$USER/pasta3'}
+...

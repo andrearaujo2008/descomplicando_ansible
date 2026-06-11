@@ -1,0 +1,20 @@
+---
+
+- name: Ansible Loop
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: User | Add User
+      ansible.builtin.user:
+        name: "{{ item.name }}"
+        state: present
+        comment: "{{ item.comment }}"
+        group: "dede"
+        shell: "{{ item.shell }}"
+      loop:
+        - { name: 'eddie',  comment: 'Van Halen', shell: '/bin/bash' }
+        - { name: 'dime',   comment: 'Pantera', shell: '/bin/bash' }
+        - { name: 'taylor', comment: 'Foo Fighters', shell: '/bin/sh' }
+        
+
+...

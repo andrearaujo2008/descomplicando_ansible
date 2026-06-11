@@ -1,0 +1,10 @@
+---
+
+- name: Variables in runtime
+  hosts: localhost
+  tasks:
+    - name: DEBUG | Variables in runtime
+      ansible.builtin.debug:
+        msg: "{{ message }}"
+
+...

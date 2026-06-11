@@ -1,0 +1,26 @@
+---
+
+- hosts: localhost
+  vars:
+    students:
+      Alice:
+        gender: female
+        age: 21
+        city: Boston
+      
+      Mark:
+        gender: male
+        age: 23
+        city: Dallas
+      
+      Peter:
+        gender: male
+        age: 26
+        city: Miami
+
+  tasks:
+    - name: Ansible Dictionaries Usage example
+      debug:
+        msg: " A list of student in detail:{{ students.Alice }}"
+
+...

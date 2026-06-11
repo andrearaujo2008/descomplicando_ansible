@@ -1,0 +1,52 @@
+#Contact: andredearaujo2007@gmail.com
+#Ansible_Version: 2.10.8
+#Ano: Junho 2024
+#last modified 02/07/2025 (mm/dd/yyyy)
+
+#Instalation MariaDB in Red Hat environments
+
+- name: Install Mariadb Server - Rocky Linux
+  yum:
+    name: 
+      - mariadb-server
+      - python-mysqlclient-doc.x86_64
+      - python3-PyMySQL.noarch
+      - python3-mysqlclient.x86_64
+    state: present
+  when: (ansible_facts['os_family'] == "RedHat")
+  notify: maria
+  tags: mdb_install
+
+# This task it will force to run handler after installed MariaDB server. (Because handlers by default it will execute after that executed all tasks) 
+- name: Flush handlers
+  meta: flush_handlers
+  
+
+
+#- name: Criando um banco de dados para ser utilizado pelo WordPress - Rocky
+   
+ # mysql_db:
+ #   login_unix_socket: "/var/lib/mysql/mysql.sock"
+ #   name: "{{ db_wp_name }}"
+ #   state: present
+ # when: (ansible_facts['os_family'] == "RedHat")
+
+- name: Criando um usuario com senha, todos banco de dados previlegiados - Rocky
+  mysql_user:
+    login_unix_socket: "/var/lib/mysql/mysql.sock"
+    name: "{{ db_wp_name }}"
+    password: "{{ db_wp_password }}"
+    priv: "{{ db_wp_name }}.*:ALL,GRANT"
+    state: present
+  when: (ansible_facts['os_family'] == "RedHat") 
+  tags: db_user_prev
+
+- name: Removes all anonymous user accounts - Rocky Linux
+  mysql_user:
+    login_unix_socket: "/var/lib/mysql/mysql.sock"
+    name: ''
+    host: localhost
+    state: absent
+  when: (ansible_facts['os_family'] == "RedHat")
+  
+  

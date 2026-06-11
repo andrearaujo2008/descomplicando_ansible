@@ -1,0 +1,16 @@
+---
+
+- name: Ansible Loop with items
+  hosts: localhost
+  tasks:
+    - name: System | Copy files
+      ansible.builtin.copy:
+        src:  "{{ item.src }}"
+        dest: "{{ item.dest }}"
+      with_items:
+      - { src: '/home/ansible/test1.txt', dest: '/tmp/test1.txt'}
+      - { src: '/home/ansible/test2.txt', dest: '/tmp/test2.txt'}
+      - { src: '/home/ansible/test3.txt', dest: '/tmp/test3.txt'}
+
+      
+...
