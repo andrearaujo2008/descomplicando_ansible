@@ -1,9 +1,0 @@
----
-
-- name: DNF | Update System
-  ansible.builtin.dnf:
-      name: "*"
-      state: latest
-      update_cache: yes
-  when: ansible_distribution == "Rocky"
-...

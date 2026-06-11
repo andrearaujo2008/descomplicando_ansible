@@ -1,6 +1,0 @@
----
-# tasks file for roles/my_role
----
-- name: Print a message
-  debug:
-    msg: "Hello from my_role in my_collection!"

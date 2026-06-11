@@ -1,6 +1,0 @@
----
-# handlers file for Linux-update 
-- name: start_maria_db
-  service:
-    name: mariadb
-    state: started 

@@ -1,5 +1,0 @@
-- name: Run my custom role
-  hosts: localhost
-  gather_facts: no
-  roles:
-    - rolex.community

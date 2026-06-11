@@ -1,7 +1,0 @@
----
-
-- name: Site Playbook
-  hosts: all
-  roles:
-    - configure_ngnix
-...
