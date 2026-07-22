@@ -1,0 +1,11 @@
+---
+- name: Instalacao Pacotes AWS
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tags: provisioning
+  roles:
+    
+     - kubernetes
+  
+...
