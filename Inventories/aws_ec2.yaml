@@ -1,0 +1,18 @@
+plugin: amazon.aws.aws_ec2
+regions:
+  - eu-west-2 # Lodon Region
+
+# Filtra apenas instâncias que estão ligadas (running)
+filters:
+  instance-state-name: [ 'running' ]
+
+# Organiza os hosts em grupos automaticamente com base nas Tags da AWS
+keyed_groups:
+  - key: tags.Role
+    prefix: role
+  - key: tags.Environment
+    prefix: env
+
+# Define qual IP o Ansible vai usar para se ligar (público ou privado)
+hostnames:
+  - ip-address # Usa o IP público. Mude para 'private-ip-address' se usar VPN/Bastion
