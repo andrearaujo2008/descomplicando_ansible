@@ -1,5 +1,7 @@
 ---
-# tasks file for kubernetes
 
-  - name: Ping nas instancias dinamicas
-    ansible.builtin.ping:
+#Teste se tem connectividade com EC2
+#  - name: Ping nas instancias dinamicas
+#    ansible.builtin.ping:
+
+# tasks file for kubernetes
