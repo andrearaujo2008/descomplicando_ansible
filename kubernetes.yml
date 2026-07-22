@@ -1,6 +1,6 @@
 ---
 - name: Instalacao Pacotes AWS
-  hosts: localhost
+  hosts: all
   connection: local
   gather_facts: false
   tags: provisioning

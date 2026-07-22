@@ -1,2 +1,5 @@
 ---
 # tasks file for kubernetes
+
+  - name: Ping nas instancias dinamicas
+    ansible.builtin.ping:
