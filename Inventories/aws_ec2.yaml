@@ -16,3 +16,4 @@ keyed_groups:
 # Define qual IP o Ansible vai usar para se ligar (público ou privado)
 hostnames:
   - ip-address # Usa o IP público. Mude para 'private-ip-address' se usar VPN/Bastion
+  - dns-name #Mostra o DNS name
