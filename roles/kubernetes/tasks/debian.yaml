@@ -3,6 +3,22 @@
 #Created: 22/07/2026
 #Last Modified:
 
+- name: Criar o arquivo de configuracao k8s.conf com os modulos
+  ansible.builtin.copy:
+    dest: /etc/modules-load.d/k8s.conf
+    content: |
+      overlay
+      br_netfilter
+
+- name: Carregar is modulos do kernel
+  ansible.builtin.command:
+    cmd: "modprobe {{ item }}"
+  loop:
+    - overlay
+    - br_netfilter
+  
+    
+
 #Update repository packages debian
 - name: APT | Update cache
   ansible.builtin.apt:
