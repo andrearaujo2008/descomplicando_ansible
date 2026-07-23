@@ -16,8 +16,6 @@
   loop:
     - overlay
     - br_netfilter
-  
-    
 
 #Update repository packages debian
 - name: APT | Update cache
