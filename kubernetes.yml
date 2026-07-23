@@ -2,7 +2,7 @@
 - name: Instalacao Pacotes AWS
   hosts: all
   connection: local
-  gather_facts: false
+  gather_facts: true
   tags: provisioning
   roles:
     
