@@ -5,3 +5,5 @@
 #    ansible.builtin.ping:
 
 # tasks file for kubernetes
+- name: APT | Update System
+  import_tasks: debian.yml
