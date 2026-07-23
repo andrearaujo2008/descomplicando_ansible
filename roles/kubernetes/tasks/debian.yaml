@@ -34,6 +34,18 @@
   ansible.builtin.apt:
       update_cache: yes
   
+- name: Install packages apt-tranport and curl
+  ansible.builtin.apt:
+    pkg:
+    - apt-transport-https
+    - curl
+  
+#Remove packages that will not more longer
+- name: APT | Remove packages no longer required
+  ansible.builtin.apt:
+    autoremove: true 
+
+
 #Upgrade the packages that out of date     
 #- name: APT | Update System
  # ansible.builtin.apt:
