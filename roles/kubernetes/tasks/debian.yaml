@@ -39,6 +39,12 @@
     pkg:
     - apt-transport-https
     - curl
+
+- name: Baixar e adicionar a chave GPG do Google nativamente
+  ansible.builtin.get_url:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    dest: /etc/apt/trusted.gpg.d/kubernetes.gpg
+    mode: '0644'
   
 #Remove packages that will not more longer
 - name: APT | Remove packages no longer required
