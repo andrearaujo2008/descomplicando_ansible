@@ -1,12 +1,14 @@
 ---
 - name: Instalacao Pacotes AWS
-  hosts: all
-  connection: local
+  hosts: aws_ec2
   gather_facts: true
-  tags: provisioning
   become: true
+  vars:
+    ansible_user: admin  # Ou 'ec2-user' dependendo da AMI da AWS
+    ansible_ssh_private_key_file: "~/.aws/kubernetes.pem"
   roles:
     
      - kubernetes
   
 ...
+#Evite colocar connection local, senao ele nao vai conectar ao cloud se tiver tira
