@@ -9,10 +9,10 @@
       update_cache: yes
   
 #Upgrade the packages that out of date     
-- name: APT | Update System
-  ansible.builtin.apt:
-      name: "*"
-      state: latest
+#- name: APT | Update System
+ # ansible.builtin.apt:
+ #     name: "*"
+ #     state: latest
   
 #Remove packages that will not more longer
 - name: APT | Remove packages no longer required
