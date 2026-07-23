@@ -6,6 +6,7 @@
   vars:
     ansible_user: admin  # Ou 'ec2-user' dependendo da AMI da AWS
     ansible_ssh_private_key_file: "~/.aws/kubernetes.pem"
+    k8s_version: "v1.30" # Defina a versão desejada do Kubernetes aqui
   roles:
     
      - kubernetes

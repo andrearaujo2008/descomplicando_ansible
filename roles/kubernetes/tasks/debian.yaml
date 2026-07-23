@@ -39,13 +39,37 @@
     pkg:
     - apt-transport-https
     - curl
+    - ca-certificates
+    - gnupg
 
-- name: Baixar e adicionar a chave GPG do Google nativamente
+- name: Garantir pasta de chaveiros do APT
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+
+- name: Baixar a chave GPG oficial do Kubernetes
   ansible.builtin.get_url:
-    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-    dest: /etc/apt/trusted.gpg.d/kubernetes.gpg
+    url: "https://pkgs.k8s.io/core:/stable:/{{ k8s_version }}/deb/Release.key"
+    dest: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
     mode: '0644'
-  
+
+- name: Adicionar repositorio do Kubernetes
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/{{ k8s_version }}/deb/ /"
+    state: present
+    filename: kubernetes
+
+- name: Instalar pacotes do Kubernetes
+  ansible.builtin.apt:
+        name:
+          - kubelet
+          - kubeadm
+          - kubectl
+        state: present
+        update_cache: yes
+
+
 #Remove packages that will not more longer
 - name: APT | Remove packages no longer required
   ansible.builtin.apt:
