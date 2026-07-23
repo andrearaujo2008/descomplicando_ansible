@@ -7,7 +7,8 @@
   ansible.builtin.copy:
     dest: /etc/modules-load.d/k8s.conf
     content: |
-     dedd
+     overlay
+     br_netfilter
 
 - name: Carregar is modulos do kernel
   ansible.builtin.command:
