@@ -4,6 +4,7 @@
   connection: local
   gather_facts: true
   tags: provisioning
+  become: true
   roles:
     
      - kubernetes
