@@ -25,6 +25,10 @@
       net.bridge.bridge-nf-call-ip6tables = 1
       net.ipv4.ip_forward                 = 1
 
+- name: Carregar as configuracoes sysctl
+  ansible.builtin.command:
+    cmd: sudo sysctl --system
+
 #Update repository packages debian
 - name: APT | Update cache
   ansible.builtin.apt:
