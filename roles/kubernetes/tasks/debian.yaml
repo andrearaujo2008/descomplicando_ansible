@@ -77,10 +77,3 @@
 - name: APT | Remove packages no longer required
   ansible.builtin.apt:
     autoremove: true 
-
-
-#Upgrade the packages that out of date     
-#- name: APT | Update System
- # ansible.builtin.apt:
- #     name: "*"
- #     state: latest
