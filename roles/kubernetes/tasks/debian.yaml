@@ -84,8 +84,3 @@
  # ansible.builtin.apt:
  #     name: "*"
  #     state: latest
-  
-#Remove packages that will not more longer
-- name: APT | Remove packages no longer required
-  ansible.builtin.apt:
-    autoremove: true 
