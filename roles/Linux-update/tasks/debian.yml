@@ -1,11 +1,19 @@
 ---
 
+<<<<<<< HEAD
 - name: APT | Update repositories
+=======
+- name: APT | Update cache
+>>>>>>> ansible
   ansible.builtin.apt:
       update_cache: yes
   when: ansible_distribution == "Debian" or ansible_hostname == "srv-debian"
      
+<<<<<<< HEAD
 - name: APT | Update System Packages
+=======
+- name: APT | Update System
+>>>>>>> ansible
   ansible.builtin.apt:
       name: "*"
       state: latest

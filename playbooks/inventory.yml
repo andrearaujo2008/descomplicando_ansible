@@ -3,7 +3,11 @@
 
 
 [rocky]
+<<<<<<< HEAD
 192.168.100.12 ansible_user=dex02 hostname=srv-rocky
 
 [samba]
 192.168.100.12 ansible_user=root hostname=debian
+=======
+192.168.100.12 ansible_user=dex02 hostname=srv-rocky
+>>>>>>> ansible
