@@ -42,23 +42,27 @@
     - ca-certificates
     - gnupg
 
+
+
 - name: Garantir pasta de chaveiros do APT
   ansible.builtin.file:
     path: /etc/apt/keyrings
     state: directory
     mode: '0755'
 
-- name: Baixar a chave GPG oficial do Kubernetes
-  ansible.builtin.get_url:
-    url: "https://pkgs.k8s.io/core:/stable:/{{ k8s_version }}/deb/Release.key"
-    dest: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-    mode: '0644'
+- name: Baixar e converter a chave para formato binário GPG
+  ansible.builtin.shell: |
+    curl -fsSL https://pkgs.k8s.io/core:/stable:/{{ k8s_version }}/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+  args:
+    creates: /etc/apt/keyrings/kubernetes-apt-keyring.gpg    
+
 
 - name: Adicionar repositorio do Kubernetes
   ansible.builtin.apt_repository:
     repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/{{ k8s_version }}/deb/ /"
     state: present
     filename: kubernetes
+    update_cache: yes
 
 - name: Instalar pacotes do Kubernetes
   ansible.builtin.apt:
@@ -70,7 +74,6 @@
         update_cache: yes
 
 
-#Remove packages that will not more longer
 - name: APT | Remove packages no longer required
   ansible.builtin.apt:
     autoremove: true 
