@@ -30,6 +30,9 @@
     cmd: sudo sysctl --system
 
 
+- name: Atualizar os repositorios antes da instalacao
+  ansible.builtin.import_tasks: tasks/update_repos.yaml
+   
   
 - name: Install packages apt-tranport and curl
   ansible.builtin.apt:
@@ -39,8 +42,7 @@
     - ca-certificates
     - gnupg
     - lsb-release
-
-
+    - containerd.io
 
 - name: Garantir pasta de chaveiros do APT
   ansible.builtin.file:
@@ -54,13 +56,15 @@
   args:
     creates: /etc/apt/keyrings/kubernetes-apt-keyring.gpg    
 
-
 - name: Adicionar repositorio do Kubernetes
   ansible.builtin.apt_repository:
     repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/{{ k8s_version }}/deb/ /"
     state: present
     filename: kubernetes
     update_cache: yes
+
+- name: Atualizar os repositorios antes da instalacao
+  ansible.builtin.import_tasks: tasks/update_repos.yaml
 
 - name: Instalar pacotes do Kubernetes
   ansible.builtin.apt:
@@ -71,14 +75,12 @@
         state: present
         update_cache: yes
 
-- name: Ativar os serviços kubelet kubeadm e kubectl
-  ansible.builtin.command:
-   command: sudo sysctl --system
-
 - name: Nao deixar que o kubelet kubeadm e kubectl receba updates
   ansible.builtin.command:
    command: sudo apt-mark hold kubelet kubeadm kubectl
-
+   
 - name: APT | Remove packages no longer required
   ansible.builtin.apt:
     autoremove: true 
+
+
