@@ -29,10 +29,7 @@
   ansible.builtin.command:
     cmd: sudo sysctl --system
 
-#Update repository packages debian
-- name: APT | Update cache
-  ansible.builtin.apt:
-      update_cache: yes
+
   
 - name: Install packages apt-tranport and curl
   ansible.builtin.apt:
