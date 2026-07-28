@@ -77,20 +77,26 @@
 
 - name: Nao deixar que o kubelet kubeadm e kubectl receba updates
   ansible.builtin.command:
-   command: sudo apt-mark hold kubelet kubeadm kubectl
+   cmd: sudo apt-mark hold kubelet kubeadm kubectl
 
 
-   - name: Baixar pacote docker
-  ansible.builtin.shell: |
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+- name: Baixar chave GPG do Docker (Nativo do Ansible)
+  ansible.builtin.get_url:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    dest: /usr/share/keyrings/docker-archive-keyring.gpg
+    mode: '0644'
+    force: no  # Com 'force: no', o Ansible pula o download se o arquivo já existir no destino!
+  become: yes
    
-- name: APT | Remove packages no longer required
-  ansible.builtin.apt:
-    autoremove: true 
 
 - name: Adicionar repositorio Docker
   ansible.builtin.apt_repository:
-    repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/{{ k8s_version }}/deb/ /"
+    repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
     state: present
-    filename: kubernetes
-    update_cache: yes
+    filename: docker
+  become: yes
+
+
+- name: APT | Remove packages no longer required
+  ansible.builtin.apt:
+    autoremove: true 
