@@ -42,7 +42,7 @@
     - ca-certificates
     - gnupg
     - lsb-release
-    - containerd.io
+    
 
 - name: Garantir pasta de chaveiros do APT
   ansible.builtin.file:
@@ -78,9 +78,19 @@
 - name: Nao deixar que o kubelet kubeadm e kubectl receba updates
   ansible.builtin.command:
    command: sudo apt-mark hold kubelet kubeadm kubectl
+
+
+   - name: Baixar pacote docker
+  ansible.builtin.shell: |
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
    
 - name: APT | Remove packages no longer required
   ansible.builtin.apt:
     autoremove: true 
 
-
+- name: Adicionar repositorio Docker
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/{{ k8s_version }}/deb/ /"
+    state: present
+    filename: kubernetes
+    update_cache: yes
