@@ -74,6 +74,9 @@
         state: present
         update_cache: yes
 
+- name: Nao deixar que o kubelet kubeadm e kubectl receba updates
+  ansible.builtin.command:
+   command: sudo sysctl --system
 
 - name: APT | Remove packages no longer required
   ansible.builtin.apt:
