@@ -5,3 +5,9 @@
       name: containerd
       state: restarted
       enabled: true
+
+- name: Habilitar o sevico kubelete
+  ansible.builtin.systemd:
+    name: kubelet
+    state: started
+    enabled: true 
