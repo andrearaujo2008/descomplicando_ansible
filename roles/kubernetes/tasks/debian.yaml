@@ -106,3 +106,25 @@
 - name: APT | Remove packages no longer required
   ansible.builtin.apt:
     autoremove: true 
+
+#Agora, vamos configurar o containerd para que ele funcione adequadamente com o nosso cluster:
+
+- name: Garantir que a pasta do containerd existe
+  ansible.builtin.file:
+    path: /etc/containerd
+    state: directory
+    mode: '0755'
+
+- name: Gerar a configuracao padrao do containerd
+  ansible.builtin.shell: "containerd config default > /etc/containerd/config.toml"
+  args:
+    creates: /etc/containerd/config.toml
+
+- name: Ativar o SystemdCgroup na configuracao do containerd
+  ansible.builtin.replace:
+    path: /etc/containerd/config.toml
+    regexp: 'SystemdCgroup = false'
+    replace: 'SystemdCgroup = true'
+  
+  notify: Reiniciar o containerd   
+  
