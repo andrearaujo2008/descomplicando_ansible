@@ -1,7 +1,7 @@
 #Tasks Install Debian packages to install Kubeadm, Kubelet and Kubectl on AWS
 #Developed by Andre de Araujo
 #Created: 22/07/2026
-#Last Modified:
+#Last Modified: 29/07/2026
 
 - name: Criar o arquivo de configuracao k8s.conf com os modulos
   ansible.builtin.copy:
@@ -29,11 +29,9 @@
   ansible.builtin.command:
     cmd: sudo sysctl --system
 
-
 - name: Atualizar os repositorios antes da instalacao
   ansible.builtin.import_tasks: tasks/update_repos.yaml
-   
-  
+    
 - name: Install packages apt-tranport and curl certificates gnupg and lsb_release
   ansible.builtin.apt:
     pkg:
@@ -43,7 +41,6 @@
     - gnupg
     - lsb-release
     
-
 - name: Garantir pasta de chaveiros do APT
   ansible.builtin.file:
     path: /etc/apt/keyrings
@@ -84,7 +81,6 @@
     force: no  # Com 'force: no', o Ansible pula o download se o arquivo já existir no destino!
   become: yes
    
-
 - name: Adicionar o repositorio oficial do Docker (Formato DEB822)
   ansible.builtin.deb822_repository:
     name: docker
@@ -99,7 +95,6 @@
 - name: Atualizar os repositorios antes da instalacao
   ansible.builtin.import_tasks: tasks/update_repos.yaml
 
-  
 - name: Instalar o Docker nativo do Ubuntu
   ansible.builtin.apt:
     name:
@@ -107,7 +102,6 @@
       - containerd
     state: present
     update_cache: true
-
 
 - name: APT | Remove packages no longer required
   ansible.builtin.apt:
