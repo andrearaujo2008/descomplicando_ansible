@@ -63,23 +63,6 @@
     filename: kubernetes
     update_cache: yes
 
-- name: Atualizar os repositorios antes da instalacao
-  ansible.builtin.import_tasks: tasks/update_repos.yaml
-
-- name: Instalar pacotes do Kubernetes
-  ansible.builtin.apt:
-        name:
-          - kubelet
-          - kubeadm
-          - kubectl
-        state: present
-        update_cache: yes
-
-- name: Nao deixar que o kubelet kubeadm e kubectl receba updates
-  ansible.builtin.command:
-   cmd: sudo apt-mark hold kubelet kubeadm kubectl
-
-
 - name: Baixar chave GPG do Docker (Nativo do Ansible)
   ansible.builtin.get_url:
     url: https://download.docker.com/linux/ubuntu/gpg
@@ -98,6 +81,26 @@
 
 - name: Atualizar os repositorios antes da instalacao
   ansible.builtin.import_tasks: tasks/update_repos.yaml
+
+- name: Instalar pacotes do Kubernetes
+  ansible.builtin.apt:
+        name:
+          - kubelet
+          - kubeadm
+          - kubectl
+        state: present
+        update_cache: yes
+
+- name: Nao deixar que o kubelet kubeadm e kubectl receba updates
+  ansible.builtin.command:
+   cmd: sudo apt-mark hold kubelet kubeadm kubectl
+
+
+
+
+- name: Atualizar os repositorios antes da instalacao
+  ansible.builtin.import_tasks: tasks/update_repos.yaml
+
 
 
 - name: APT | Remove packages no longer required
