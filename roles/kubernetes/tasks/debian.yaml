@@ -34,7 +34,7 @@
   ansible.builtin.import_tasks: tasks/update_repos.yaml
    
   
-- name: Install packages apt-tranport and curl
+- name: Install packages apt-tranport and curl certificates gnupg and lsb_release
   ansible.builtin.apt:
     pkg:
     - apt-transport-https
@@ -63,6 +63,19 @@
     filename: kubernetes
     update_cache: yes
 
+- name: Instalar pacotes do Kubernetes
+  ansible.builtin.apt:
+        name:
+          - kubelet
+          - kubeadm
+          - kubectl
+        state: present
+        update_cache: yes
+
+- name: Nao deixar que o kubelet kubeadm e kubectl receba updates
+  ansible.builtin.command:
+   cmd: sudo apt-mark hold kubelet kubeadm kubectl
+
 - name: Baixar chave GPG do Docker (Nativo do Ansible)
   ansible.builtin.get_url:
     url: https://download.docker.com/linux/ubuntu/gpg
@@ -72,36 +85,28 @@
   become: yes
    
 
-- name: Adicionar repositorio Docker
-  ansible.builtin.apt_repository:
-    repo: "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+- name: Adicionar o repositorio oficial do Docker (Formato DEB822)
+  ansible.builtin.deb822_repository:
+    name: docker
+    types: [deb]
+    uris: "https://download.docker.com/linux/ubuntu"
+    suites: "{{ ansible_distribution_release | lower }}"
+    components: [stable]
+    architectures: "{{ ansible_architecture == 'x86_64' | ternary('amd64', ansible_architecture) }}"
+    signed_by: /etc/apt/keyrings/docker.asc
     state: present
-    filename: docker
-  become: yes
 
 - name: Atualizar os repositorios antes da instalacao
   ansible.builtin.import_tasks: tasks/update_repos.yaml
 
-- name: Instalar pacotes do Kubernetes
+  
+- name: Instalar o Docker nativo do Ubuntu
   ansible.builtin.apt:
-        name:
-          - kubelet
-          - kubeadm
-          - kubectl
-          - containerd.io
-        state: present
-        update_cache: yes
-
-- name: Nao deixar que o kubelet kubeadm e kubectl receba updates
-  ansible.builtin.command:
-   cmd: sudo apt-mark hold kubelet kubeadm kubectl
-
-
-
-
-- name: Atualizar os repositorios antes da instalacao
-  ansible.builtin.import_tasks: tasks/update_repos.yaml
-
+    name:
+      - docker.io
+      - containerd
+    state: present
+    update_cache: true
 
 
 - name: APT | Remove packages no longer required
