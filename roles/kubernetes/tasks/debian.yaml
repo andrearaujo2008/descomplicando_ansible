@@ -96,6 +96,9 @@
     filename: docker
   become: yes
 
+- name: Atualizar os repositorios antes da instalacao
+  ansible.builtin.import_tasks: tasks/update_repos.yaml
+
 
 - name: APT | Remove packages no longer required
   ansible.builtin.apt:
