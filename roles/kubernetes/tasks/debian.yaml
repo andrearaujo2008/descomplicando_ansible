@@ -88,6 +88,7 @@
           - kubelet
           - kubeadm
           - kubectl
+          - containerd.io
         state: present
         update_cache: yes
 
