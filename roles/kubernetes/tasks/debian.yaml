@@ -130,3 +130,6 @@
   
   #Por fim, vamos habilitar o serviço do kubelet para que ele inicie automaticamente com o sistema:
   notify: Habilitar o sevico kubelete
+
+- name: Instalar as ferramentas para funcionar no control_plane
+  ansible.builtin.import_tasks: tasks/control_plane.yaml
