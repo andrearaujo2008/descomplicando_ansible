@@ -1,5 +1,3 @@
-
-
 - name: Obter IP privado principal da maquina
   ansible.builtin.set_fact:
     private_ip: "{{ ansible_default_ipv4.address }}"
