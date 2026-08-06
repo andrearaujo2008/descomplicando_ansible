@@ -42,3 +42,13 @@
       mode: '0771'
       owner: ubuntu
       group: ubuntu
+
+- name: Copiar as configuracoes /etc/kubernetes/admin.conf para kube/config
+  ansible.builtin.copy:
+    src: /etc/kubernetes/admin.conf
+    dest: /home/ubuntu/.kube/config
+    remote_src: yes # <--- Diz ao Ansible que o arquivo já está na máquina remota no caso AWS
+    owner: ubuntu
+    group: ubuntu
+    mode: '0600'
+    
