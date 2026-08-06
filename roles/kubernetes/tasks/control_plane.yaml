@@ -37,7 +37,7 @@
 
 - name: Criar diretorio com nome kube
   ansible.builtin.file:
-      path: $HOME/.kube
+      path: /home/ubuntu/.kube
       state: directory
       mode: '0771'
       owner: ubuntu
