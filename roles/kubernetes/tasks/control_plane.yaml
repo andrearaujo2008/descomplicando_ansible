@@ -34,3 +34,11 @@
     --apiserver-advertise-address={{ private_ip }}
   register: kubeadm_output
   changed_when: "'Your Kubernetes control-plane has initialized successfully!' in kubeadm_output.stdout"
+
+- name: Criar diretorio com nome kube
+  ansible.builtin.file:
+      path: $HOME/.kube
+      state: directory
+      mode: '0771'
+      owner: ubuntu
+      group: ubuntu
