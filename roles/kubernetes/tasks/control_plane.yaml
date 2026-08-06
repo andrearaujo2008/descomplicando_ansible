@@ -1,3 +1,28 @@
+- name: Obter o Instance ID dos facts locais
+  amazon.aws.ec2_metadata_facts:
+
+- name: Buscar informações da instância diretamente na API da AWS
+  amazon.aws.ec2_instance_info:
+    region: eu-west-2
+    instance_ids:
+      - "{{ ansible_ec2_instance_id }}"
+  delegate_to: localhost
+  register: aws_ec2_info
+  environment:
+    AWS_ACCESS_KEY_ID: "{{ lookup('ini', 'aws_access_key_id section=default file=~/.aws/credentials') }}"
+    AWS_SECRET_ACCESS_KEY: "{{ lookup('ini', 'aws_secret_access_key section=default file=~/.aws/credentials') }}"
+    AWS_SESSION_TOKEN: "{{ lookup('ini', 'aws_session_token section=default file=~/.aws/credentials') | default(omit) }}"
+    AWS_REGION: "eu-west-2"
+
+- name: Criar variável com a tag Name
+  ansible.builtin.set_fact:
+    instance_name_tag: "{{ aws_ec2_info.instances[0].tags.Name | default('') }}"
+
+- name: Validar tag da instância
+  ansible.builtin.fail:
+    msg: "Esta máquina não possui a tag 'kubernetes_instance-1' esperada!"
+  when: instance_name_tag != 'kubernetes_instance-1'
+
 - name: Obter IP privado principal da maquina
   ansible.builtin.set_fact:
     private_ip: "{{ ansible_default_ipv4.address }}"
