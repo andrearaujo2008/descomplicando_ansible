@@ -6,7 +6,7 @@
       state: restarted
       enabled: true
 
-- name: Habilitar o sevico kubelet
+- name: Habilitar o servico kubelet
   ansible.builtin.systemd:
     name: kubelet
     state: started
