@@ -51,9 +51,10 @@
     owner: ubuntu
     group: ubuntu
     mode: '0600'
+
 - name: Extrair o comando de join da saída do kubeadm
   ansible.builtin.set_fact:
-    join_command: "{{ kubeadm_output.stdout_lines | select('search', 'kubeadm join') | list | first }}"
+    join_command: "{{ kubeadm_output.stdout_lines | select('search', 'kubeadm join') | list }}"
 
 - name: Exibir o comando join para cópia/uso
   ansible.builtin.debug:
