@@ -51,3 +51,9 @@
     owner: ubuntu
     group: ubuntu
     mode: '0600'
+    
+- name: Salvar a saída do kubeadm init em um arquivo local na máquina remota
+    ansible.builtin.copy:
+      content: "{{ kubeadm_output.stdout }}"
+      dest: /var/log/kubeadm_init_output.log
+      mode: '0644'
