@@ -126,10 +126,9 @@
     regexp: 'SystemdCgroup = false'
     replace: 'SystemdCgroup = true'
   
-  notify: Reiniciar o containerd   
-  
-  #Por fim, vamos habilitar o serviço do kubelet para que ele inicie automaticamente com o sistema:
-  notify: Habilitar o servico kubelet
+  notify: 
+    - Reiniciar o containerd   
+    - Habilitar o servico kubelet
 
 - name: Instalar as ferramentas para funcionar no control_plane
   ansible.builtin.import_tasks: tasks/control_plane.yaml
