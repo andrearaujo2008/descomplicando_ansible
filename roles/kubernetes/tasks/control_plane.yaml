@@ -54,10 +54,10 @@
 
     
 - name: Salvar a saída do kubeadm init em um arquivo local na máquina remota
-    ansible.builtin.copy:
-      content: "{{ kubeadm_output.stdout }}"
-      dest: /var/log/kubeadm_init_output.log
-      mode: '0644'
+  ansible.builtin.copy:
+    content: "{{ kubeadm_output.stdout }}"
+    dest: /var/log/kubeadm_init_output.log
+    mode: '0644'
 
 
 - name: Extrair o comando de join da saída do kubeadm
