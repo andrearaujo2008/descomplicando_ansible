@@ -51,9 +51,35 @@
     owner: ubuntu
     group: ubuntu
     mode: '0600'
+
     
 - name: Salvar a saída do kubeadm init em um arquivo local na máquina remota
     ansible.builtin.copy:
       content: "{{ kubeadm_output.stdout }}"
       dest: /var/log/kubeadm_init_output.log
       mode: '0644'
+
+
+- name: Extrair o comando de join da saída do kubeadm
+  ansible.builtin.set_fact:
+    join_command: "{{ kubeadm_output.stdout_lines | select('search', 'kubeadm join') | list }}"
+
+- name: Salvar a saida do kubeadm init em um arquivo local na maquina remota
+  ansible.builtin.copy:
+    content: "{{ kubeadm_output.stdout }}"
+    dest: /var/log/kubeadm_init_output.log
+    mode: '0644'
+
+- name: Ler as 2 últimas linhas do arquivo
+  ansible.builtin.command: 
+    cmd: tail -n 2 /var/log/kubeadm_init_output.log
+  register: tail_output
+  changed_when: false
+
+- name: Repassar/colar a informação para os workers (outras instâncias)
+  ansible.builtin.set_fact:
+        comando_extraido: "{{ tail_output.stdout }}"
+  delegate_to: "{{ item }}"
+  delegate_facts: true
+  loop: "{{ groups['tag_Role_workers'] }}"
+
