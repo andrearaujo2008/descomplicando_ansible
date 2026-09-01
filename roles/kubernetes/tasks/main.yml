@@ -5,5 +5,16 @@
 #    ansible.builtin.ping:
 
 # tasks file for kubernetes
-- name: APT | Update System
-  import_tasks: debian.yaml
+- name: Instalar pré-requisitos e pacotes base
+  ansible.builtin.include_tasks: debian.yaml
+ # import_tasks: debian.yaml
+
+  # 2. Roda APENAS no Master (Instância 1)
+- name: Configurar Control Plane (Master)
+  ansible.builtin.include_tasks: control_plane.yaml
+  when: inventory_hostname in groups['_kubernetes_instance_1']
+
+  # 3. Roda APENAS nos Workers (Instância 2)
+#- name: Configurar e Ingressar Workers
+#  ansible.builtin.include_tasks: workers.yaml
+#  when: inventory_hostname in groups['_kubernetes_instance_2']
