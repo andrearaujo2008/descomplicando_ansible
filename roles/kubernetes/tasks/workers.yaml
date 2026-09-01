@@ -1,8 +1,14 @@
-- name: Executar kubeadm join no Worker
-  ansible.builtin.command:
-    cmd: "{{ hostvars['35.179.77.31']['tail_output']['stdout'] | regex_replace('\\\\\n\\s*', ' ') | regex_replace('\n', ' ') }}"
-  register: join_result
+#- name: Resetar configuracoes residuais no Worker
+  #ansible.builtin.command:
+    #cmd: kubeadm reset -f
+  #register: reset_result
+  #changed_when: reset_result.rc == 0
 
-- name: Exibir saída do join
-  ansible.builtin.debug:
-    var: join_result.stdout
+#- name: Executar kubeadm join no Worker
+  #ansible.builtin.command:
+    #cmd: "{{ hostvars[groups['_kubernetes_instance_1'][0]]['tail_output']['stdout'] | regex_replace('\\\\\n\\s*', ' ') | regex_replace('\n', ' ') }}"
+  #register: join_result
+
+#- name: Exibir saída do join
+  #ansible.builtin.debug:
+    #var: join_result.stdout
