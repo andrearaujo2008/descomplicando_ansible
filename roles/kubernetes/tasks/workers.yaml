@@ -1,2 +1,8 @@
+- name: Executar kubeadm join no Worker
+  ansible.builtin.command:
+    cmd: "{{ hostvars['35.179.77.31']['tail_output']['stdout'] | regex_replace('\\\\\n\\s*', ' ') | regex_replace('\n', ' ') }}"
+  register: join_result
 
-  # Envia apenas para as outras instâncias
+- name: Exibir saída do join
+  ansible.builtin.debug:
+    var: join_result.stdout

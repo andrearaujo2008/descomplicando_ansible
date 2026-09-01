@@ -70,16 +70,21 @@
     dest: /var/log/kubeadm_init_output.log
     mode: '0644'
 
-- name: Ler as 2 últimas linhas do arquivo
+- name: Ler as duas ultimas linhas do arquivo
   ansible.builtin.command: 
     cmd: tail -n 2 /var/log/kubeadm_init_output.log
   register: tail_output
   changed_when: false
+  
+- name: Exibir todas as tags da instância no terminal
+  ansible.builtin.debug:
+    var: tags
 
-- name: Repassar/colar a informação para os workers (outras instâncias)
+- name: Repassar o comando para o Worker
   ansible.builtin.set_fact:
-        comando_extraido: "{{ tail_output.stdout }}"
+    k8s_join_cmd: "{{ tail_output.stdout }}"
   delegate_to: "{{ item }}"
   delegate_facts: true
-  loop: "{{ groups['tag_Role_workers'] }}"
+
+  loop: "{{ groups['_kubernetes_instance_2'] }}"
 
