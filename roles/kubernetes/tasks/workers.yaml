@@ -11,3 +11,9 @@
 - name: Show the join command pasted into the Worker
   ansible.builtin.debug:
     msg: "Pasted command ready to execute: {{ app_config.content | b64decode | regex_replace('\\\\\\n\\s*', ' ') | regex_replace('\\n', ' ') | trim }}"
+    
+    
+- name: Execute kubeadm join on Worker
+  ansible.builtin.command:
+    cmd: "{{ app_config.content | b64decode | regex_replace('\\\\\\n\\s*', ' ') | regex_replace('\\n', ' ') | trim }}"
+  when: inventory_hostname in groups['_kubernetes_instance_2']
