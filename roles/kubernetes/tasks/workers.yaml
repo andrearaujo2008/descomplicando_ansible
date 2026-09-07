@@ -1,4 +1,4 @@
-- name: Read contents /var/log/kubernetes/kubeadm_join_command.log and executes in Workers Instances
+- name: Read contents /var/log/kubernetes/kubeadm_join_command.log and trow in Workers Instances
   ansible.builtin.slurp: #This module it will use remote src to read and execute workes instances
     src: /var/log/kubernetes/kubeadm_join_command.log
   delegate_to: "{{ groups['_kubernetes_instance_1'][0] }}" #Here I'm poiting where from I need to read the content" "In this case the file is other instance calls Control-plane"
