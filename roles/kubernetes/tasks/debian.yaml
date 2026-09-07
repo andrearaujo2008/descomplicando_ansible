@@ -129,12 +129,3 @@
   notify: 
     - Reiniciar o containerd   
     - Habilitar o servico kubelet
-
-- name: Instalar as ferramentas para funcionar no control_plane
-  ansible.builtin.import_tasks: tasks/control_plane.yaml
-  
-  tags:
-    - control_plane
-
-- name: Instalar as ferramentas para funcionar no workers
-  ansible.builtin.import_tasks: tasks/workers.yaml
