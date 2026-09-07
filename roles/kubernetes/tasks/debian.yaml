@@ -29,8 +29,10 @@
   ansible.builtin.command:
     cmd: sudo sysctl --system
 
-- name: Atualizar os repositorios antes da instalacao
-  ansible.builtin.import_tasks: tasks/update_repos.yaml
+#Update repository packages debian
+- name: APT | Update cache
+  ansible.builtin.apt:
+      update_cache: yes
     
 - name: Install packages apt-tranport and curl certificates gnupg and lsb_release
   ansible.builtin.apt:
