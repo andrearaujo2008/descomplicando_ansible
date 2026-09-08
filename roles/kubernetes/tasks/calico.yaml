@@ -1,0 +1,14 @@
+
+- name: Install Operator Tigera
+  ansible.builtin.shell:
+    cmd: kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/tigera-operator.yaml
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+  register: tigera_install
+  failed_when:
+    - tigera_install.rc != 0
+    - "'AlreadyExists' not in tigera_install.stderr"
+  changed_when: tigera_install.rc == 0
+  tags:
+    - calico
+    
