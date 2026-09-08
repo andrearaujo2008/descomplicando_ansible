@@ -9,6 +9,11 @@
     - tigera_install.rc != 0
     - "'AlreadyExists' not in tigera_install.stderr"
   changed_when: tigera_install.rc == 0
+  
+    
+- name: Baixar custom-resources.yaml
+  ansible.builtin.shell:
+    curl -O https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/custom-resources.yaml
+    
   tags:
     - calico
-    
