@@ -19,8 +19,8 @@
 - name: Apply the manifest file custom-resources.yaml
   ansible.builtin.shell:
     cmd: kubectl apply -f /home/ubuntu/custom-resources.yaml
-  environment:
-    KUBECONFIG: /etc/kubernetes/admin.conf #Aponta diretamente para os certificados gerados pelo kubeadm. Assim o kubectl conecta na porta 6443 com autenticacao TLS
+    environment:
+      KUBECONFIG: /etc/kubernetes/admin.conf #Aponta diretamente para os certificados gerados pelo kubeadm. Assim o kubectl conecta na porta 6443 com autenticao TLS
 
   register: custom_resources
   failed_when:

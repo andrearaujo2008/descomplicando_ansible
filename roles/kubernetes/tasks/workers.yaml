@@ -16,4 +16,4 @@
 - name: Execute kubeadm join on Worker
   ansible.builtin.command:
     cmd: "{{ app_config.content | b64decode | regex_replace('\\\\\\n\\s*', ' ') | regex_replace('\\n', ' ') | trim }}"
-  when: inventory_hostname in groups['_kubernetes_instance_2']
+  when: inventory_hostname in (groups['_kubernetes_instance_2'] + groups['_kubernetes_instance_3'])
