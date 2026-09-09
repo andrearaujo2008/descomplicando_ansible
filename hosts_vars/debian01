@@ -1,0 +1,4 @@
+ansible_user: dex01
+hostname: srv-debian
+remote_port: 22
+zz: dir
