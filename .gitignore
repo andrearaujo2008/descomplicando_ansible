@@ -2,3 +2,4 @@ node_modules/
 .venv/
 dist/
 teste.txt
+roles/aws_ec2/
