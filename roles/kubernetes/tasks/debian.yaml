@@ -133,3 +133,14 @@
   notify: 
     - Reiniciar o containerd   
     - Habilitar o servico kubelet
+    
+#10-09-2026 Adding a task to identify the nodes when to do a search
+- name: Mapear e definir o hostname do no
+  ansible.builtin.hostname:
+    name: >-
+      {{
+        'control-plane' if inventory_hostname in groups.get('_kubernetes_instance_1', [])
+        else ('worker-01' if inventory_hostname in groups.get('_kubernetes_instance_2', [])
+        else ('worker-02' if inventory_hostname in groups.get('_kubernetes_instance_3', [])
+        else inventory_hostname))
+      }}

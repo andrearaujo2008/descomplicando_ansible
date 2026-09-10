@@ -18,6 +18,7 @@
   ansible.builtin.set_fact:
     instance_name_tag: "{{ aws_ec2_info.instances[0].tags.Name | default('') }}"
 
+
 - name: Validar tag da instância
   ansible.builtin.fail:
     msg: "Esta máquina não possui a tag 'kubernetes_instance-1' esperada!"
@@ -26,6 +27,7 @@
 - name: Obter IP privado principal da maquina
   ansible.builtin.set_fact:
     private_ip: "{{ ansible_default_ipv4.address }}"
+    
 
 - name: Executar o kubeadm init
   ansible.builtin.command: >

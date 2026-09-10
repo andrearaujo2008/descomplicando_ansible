@@ -1,3 +1,5 @@
+
+
 - name: Read contents /var/log/kubernetes/kubeadm_join_command.log and trow in Workers Instances
   ansible.builtin.slurp: #This module it will use remote src to read and execute workes instances
     src: /var/log/kubernetes/kubeadm_join_command.log
