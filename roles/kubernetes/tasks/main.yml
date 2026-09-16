@@ -13,7 +13,9 @@
   # 3. Roda APENAS nos Workers (Instância 2)
 - name: Configurar e Ingressar Workers
   ansible.builtin.include_tasks: workers.yaml
-  when: inventory_hostname in (groups['_kubernetes_instance_2'] + groups['_kubernetes_instance_3'])
+ # when: inventory_hostname in (groups['_kubernetes_instance_2'] + groups['_kubernetes_instance_3'])
+  when: inventory_hostname in (groups.get('_kubernetes_instance_2', []) + groups.get('_kubernetes_instance_3', []))
+
   tags:
    - workers
    
